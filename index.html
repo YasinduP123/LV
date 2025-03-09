@@ -247,7 +247,12 @@
         const backgroundMusic = document.getElementById('background-music');
         let animationIntervals = [];
 
-        button.addEventListener('click', () => {
+        // Add both click and touchstart event listeners for mobile compatibility
+        button.addEventListener('click', handleClick);
+        button.addEventListener('touchstart', handleClick);
+
+        function handleClick(event) {
+            event.preventDefault(); // Prevent default behavior for touch events
             button.style.display = 'none';
             message.classList.add('visible');
             
@@ -282,7 +287,7 @@
                 shapes: ['star', 'circle'],
                 scalar: 1.2
             });
-        });
+        }
 
         function createSparkle(x, y) {
             const sparkle = document.createElement('div');

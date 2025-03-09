@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Magical Surprise</title>
     <style>
-        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            overflow: hidden;
         }
 
         body {
@@ -18,20 +25,26 @@
             overflow: hidden;
             font-family: 'Dancing Script', cursive;
             line-height: 1.6;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
         .container {
             position: relative;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
         .magic-button {
             padding: 1.5rem 4rem;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
             background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             border: none;
             border-radius: 50px;
@@ -42,6 +55,7 @@
             box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
             position: relative;
             overflow: hidden;
+            min-width: 220px;
         }
 
         .magic-button:hover {
@@ -65,33 +79,46 @@
         }
 
         @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
         }
 
-        /* Fireworks */
         .firework {
             position: absolute;
             width: 6px;
             height: 6px;
             border-radius: 50%;
             animation: explode 1.5s ease-out forwards;
+            transform: translateZ(0);
+            will-change: transform, opacity;
         }
 
         @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(25); opacity: 0; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(25);
+                opacity: 0;
+            }
         }
 
-        /* Butterflies */
         .butterfly {
             position: absolute;
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
             animation: float 1s linear infinite;
             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+            transform: translateZ(0);
+            will-change: transform, opacity;
         }
 
-        /* Magic Sparkles */
         .sparkle {
             position: absolute;
             width: 8px;
@@ -99,18 +126,20 @@
             background: #fff;
             border-radius: 50%;
             animation: sparkle 2s ease-out infinite;
+            transform: translateZ(0);
+            will-change: transform, opacity;
         }
 
-        /* Floating Hearts */
         .heart {
             position: absolute;
             color: #ff6b6b;
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
             animation: float 3s linear infinite;
             filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.7));
+            transform: translateZ(0);
+            will-change: transform, opacity;
         }
 
-        /* Glowing Message */
         .message {
             position: fixed;
             top: 50%;
@@ -119,64 +148,71 @@
             color: white;
             text-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
             opacity: 0;
-            transition: all 2s ease;
+            transition: opacity 2s ease;
             pointer-events: none;
-            width: 90%;
+            width: 95%;
             max-width: 800px;
             padding: 20px;
             text-align: center;
         }
 
         .message-content {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            line-height: 1.5;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
 
+        .message-content strong {
+            font-size: 1.4em;
+            display: block;
+            margin: 15px 0;
+        }
+
         @keyframes float {
-            0% { transform: translateY(100vh) translateX(-10vw); opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(10vw); opacity: 1; }
+            0% {
+                transform: translateY(100vh) translateX(-10vw);
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(10vw);
+            }
         }
 
         @keyframes sparkle {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .magic-button {
-                padding: 1rem 2rem;
-                font-size: 1.8rem;
+            0% {
+                transform: scale(0);
+                opacity: 1;
             }
 
-            .message-content {
-                font-size: 1.2rem;
-                padding: 0 1rem;
-            }
-
-            .heart, .butterfly {
-                font-size: 1.5rem;
+            100% {
+                transform: scale(3);
+                opacity: 0;
             }
         }
 
         @media (max-width: 480px) {
             .magic-button {
-                font-size: 1.5rem;
-                padding: 0.8rem 1.5rem;
+                padding: 1rem 2rem;
+                min-width: 200px;
             }
 
             .message-content {
-                font-size: 1rem;
-                line-height: 1.4;
+                line-height: 2;
+            }
+
+            .message-content p {
+                margin: 20px 0;
             }
 
             small {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
+                margin-top: 25px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <button class="magic-button">Click for Magic ✨</button>
@@ -189,10 +225,8 @@
                 😘 Give me a chance to prove my love 😘
                 😘 Soo My Love 😘
                 😘 I Want To Tell You Something 😘
-                <br>
-                <strong style="font-size: xx-large;">🌹🥰😘 I love you so much 🌹🥰😘</strong>
-                <p style="font-size: 1.2em; margin: 15px 0;">🌹🥰😘 Buddimaaa 🌹🥰😘</p>
-                <br>
+                <strong>🌹🥰😘 I love you so much 🌹🥰😘</strong>
+                <p>🌹🥰😘 Buddimaaa 🌹🥰😘</p>
                 <small>I am your lovely <b>Pani Moonaa 😘😘😘</b></small>
             </div>
         </div>
@@ -200,17 +234,18 @@
         <script>
             const button = document.querySelector('.magic-button');
             const message = document.querySelector('.message');
+            let animationIntervals = [];
 
             function createFirework(x, y) {
                 const colors = ['#ff6b6b', '#ff8e8e', '#ffffff', '#ffd700'];
-                for (let i = 0; i < 72; i++) {
-                    const angle = (Math.PI * 2 * i) / 72;
+                for (let i = 0; i < 48; i++) {
+                    const angle = (Math.PI * 2 * i) / 48;
                     const firework = document.createElement('div');
                     firework.className = 'firework';
                     firework.style.left = x + 'px';
                     firework.style.top = y + 'px';
                     firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    firework.style.transform = `translate(${Math.cos(angle) * 100}px, ${Math.sin(angle) * 100}px)`;
+                    firework.style.transform = `translate(${Math.cos(angle) * 80}px, ${Math.sin(angle) * 80}px)`;
                     document.body.appendChild(firework);
                     setTimeout(() => firework.remove(), 1500);
                 }
@@ -226,21 +261,11 @@
                 setTimeout(() => butterfly.remove(), 5000);
             }
 
-            function createRoseFlower() {
-                const butterfly = document.createElement('div');
-                butterfly.className = 'butterfly';
-                butterfly.innerHTML = '🌹';
-                butterfly.style.left = Math.random() * 100 + 'vw';
-                butterfly.style.animationDuration = (Math.random() * 3 + 5) + 's';
-                document.body.appendChild(butterfly);
-                setTimeout(() => butterfly.remove(), 5000);
-            }
-
             function createMagicElements() {
-                // Continuous animations
-                const intervals = [
-                    setInterval(() => { for (let i = 0; i < 3; i++) createButterfly(); }, 1000),
-                    setInterval(() => { for (let i = 0; i < 3; i++) createRoseFlower(); }, 5000),
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+                animationIntervals = [
+                    setInterval(() => createButterfly(), isMobile ? 2500 : 1500),
                     setInterval(() => {
                         const heart = document.createElement('div');
                         heart.className = 'heart';
@@ -248,39 +273,37 @@
                         heart.style.left = Math.random() * 100 + 'vw';
                         document.body.appendChild(heart);
                         setTimeout(() => heart.remove(), 8000);
-                    }, 500),
+                    }, isMobile ? 800 : 500),
                     setInterval(() => {
-                        const sparkle = document.createElement('div');
-                        sparkle.className = 'sparkle';
-                        sparkle.style.left = Math.random() * 100 + 'vw';
-                        sparkle.style.top = Math.random() * 100 + 'vh';
-                        document.body.appendChild(sparkle);
-                        setTimeout(() => sparkle.remove(), 2000);
-                    }, 100),
-                    setInterval(() => {
-                        createFirework(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
-                    }, 1500)
+                        createFirework(
+                            Math.random() * window.innerWidth,
+                            Math.random() * window.innerHeight
+                        );
+                    }, isMobile ? 2500 : 1800)
                 ];
+            }
 
-                // Cleanup on window close
-                window.addEventListener('beforeunload', () => {
-                    intervals.forEach(clearInterval);
-                });
+            function clearAnimations() {
+                animationIntervals.forEach(clearInterval);
+                animationIntervals = [];
+                document.querySelectorAll('.firework, .butterfly, .heart, .sparkle').forEach(el => el.remove());
             }
 
             button.addEventListener('click', () => {
                 button.style.display = 'none';
                 message.style.opacity = '1';
-                message.style.transform = 'translate(-50%, -50%)';
-
-                // Initial explosion
                 createFirework(window.innerWidth / 2, window.innerHeight / 2);
                 createMagicElements();
-
-                // Background transition
-                document.body.style.background = `linear-gradient(45deg, #1a0a0a, #0a0a2e, #1a0a0a)`;
             });
+
+            window.addEventListener('resize', () => {
+                clearAnimations();
+                if (window.visualViewport) window.visualViewport.scale = 1;
+            });
+
+            window.addEventListener('beforeunload', clearAnimations);
         </script>
     </div>
 </body>
+
 </html>

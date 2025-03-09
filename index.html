@@ -259,7 +259,16 @@
                 butterfly.style.left = Math.random() * 100 + 'vw';
                 butterfly.style.animationDuration = (Math.random() * 3 + 5) + 's';
                 document.body.appendChild(butterfly);
-                setTimeout(() => butterfly.remove(), 5000);
+                setTimeout(() => butterfly.remove(), 8000);
+            }
+            function createRose() {
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+                butterfly.innerHTML = '🌹';
+                butterfly.style.left = Math.random() * 100 + 'vw';
+                butterfly.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                document.body.appendChild(butterfly);
+                setTimeout(() => butterfly.remove(), 7000);
             }
 
             function createMagicElements() {
@@ -267,6 +276,7 @@
 
                 animationIntervals = [
                     setInterval(() => createButterfly(), isMobile ? 2500 : 1500),
+                    setInterval(() => createRose(), isMobile ? 2500 : 1500),
                     setInterval(() => {
                         const heart = document.createElement('div');
                         heart.className = 'heart';
